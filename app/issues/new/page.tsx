@@ -7,7 +7,8 @@ import axios from "axios"
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createIssueSchema } from '@/app/validationSchema';
-import {z } from "zod"
+import { z } from "zod"
+import ErrorMessage from '@/components/ErrorMessage';
 
 
 
@@ -15,14 +16,14 @@ type IssueForm = z.infer<typeof createIssueSchema>;
 
 const NewIssuePage = () => {
   const [error, setError] = useState("")
-  const { register, control, handleSubmit , formState:{ errors} } = useForm<IssueForm>({
-    resolver:zodResolver(createIssueSchema)
+  const { register, control, handleSubmit, formState: { errors } } = useForm<IssueForm>({
+    resolver: zodResolver(createIssueSchema)
   });
   const router = useRouter()
 
   return (
     <div className='max-w-xl'>
-      { error && <Callout.Root color='red' className='mb-5'>
+      {error && <Callout.Root color='red' className='mb-5'>
         <Callout.Text>
           {error}
         </Callout.Text>
@@ -40,7 +41,7 @@ const NewIssuePage = () => {
       >
         <TextField.Root placeholder="Title" {...register('title')}>
         </TextField.Root>
-        {errors.title && <Text color='red' as='p'>{errors.title.message}</Text>}
+        <ErrorMessage>{errors?.title?.message}</ErrorMessage>
         <div data-color-mode='light'>
           <Controller
             name="description"
@@ -49,7 +50,7 @@ const NewIssuePage = () => {
               <MDEditor value={field.value} onChange={field.onChange} />
             )}
           />
-          {errors.description && <Text color='red' as='p'>{errors.description.message}</Text>}
+          <ErrorMessage>{errors?.description?.message}</ErrorMessage>
         </div>
         <Button>Submit New Issue</Button>
       </form>
