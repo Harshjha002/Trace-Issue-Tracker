@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "zod";
 
 export const createIssueSchema = z.object({
     title: z
@@ -9,5 +9,5 @@ export const createIssueSchema = z.object({
     description: z
         .string()
         .trim()
-        .min(1, { message: "Description is required and cannot be empty." })
+        .min(1, { message: "Description is required and cannot be empty." }),
 });
