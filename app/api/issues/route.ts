@@ -4,8 +4,15 @@ import prisma from "@/prisma/client";
 import { z } from "zod"
 
 const createIssueSchema = z.object({
-    title: z.string().min(1).max(255),
-    description: z.string().min(1)
+    title: z
+        .string()
+        .trim()
+        .min(1, { message: "Title is required and cannot be empty." })
+        .max(255, { message: "Title cannot exceed 255 characters." }),
+    description: z
+        .string()
+        .trim()
+        .min(1, { message: "Description is required and cannot be empty." })
 })
 
 export async function POST(request: NextRequest) {
