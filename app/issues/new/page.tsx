@@ -2,13 +2,18 @@
 import React, { useState } from "react";
 import { Button, Callout, Spinner, TextField } from "@radix-ui/themes";
 import { useForm, Controller } from "react-hook-form";
-import MDEditor from "@uiw/react-md-editor";
+
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createIssueSchema } from "@/app/validationSchema";
 import ErrorMessage from "@/components/ErrorMessage";
 import { z } from "zod";
+import dynamic from "next/dynamic";
+
+const MDEditor =dynamic(() => import("@uiw/react-md-editor"),
+{ssr:false}
+)
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
@@ -54,7 +59,11 @@ const NewIssuePage = () => {
                         name="description"
                         control={control}
                         render={({ field }) => (
-                            <MDEditor value={field.value} onChange={field.onChange} />
+                            <MDEditor value={field.value} onChange={field.onChange} 
+                            preview="edit"
+                            height={300}
+                            style={{borderRadius:20 , overflow:"hidden"}}
+                            />
                         )}
                     />
                     <ErrorMessage>{errors?.description?.message}</ErrorMessage>
